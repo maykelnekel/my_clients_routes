@@ -7,10 +7,10 @@ const router = express.Router()
 
 router.post('/create',  (_: Request, __: Response, next: NextFunction) =>{
   /* SWAGGER DOCS
-  
+
     #swagger.tags = ['Users']
     #swagger.sumary = 'Criação de usuário'
-    #swagger.description = 'Através dessa rota é possível criar um usuário.'
+    #swagger.description = 'Através desse endpoint é possível criar um usuário.'
     #swagger.schema = { '#ref: #/schemas/UserSchema' }
     #swagger.requestBody = {
             required: true,
@@ -51,7 +51,7 @@ router.get('/list', (_: Request, __: Response, next: NextFunction) =>{
 
     #swagger.tags = ['Users']
     #swagger.sumary = 'Listagem de usuários'
-    #swagger.description = 'Através dessa rota é possível listar todos os usuários da aplicação.'
+    #swagger.description = 'Através desse endpoint é possível listar todos os usuários da aplicação.'
     #swagger.schema = { $ref: '#/schemas/UsersListSchema' }
     #swagger.responses[200] = {
         description: 'Retorno feito com sucesso.',

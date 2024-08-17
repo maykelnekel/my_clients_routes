@@ -11,23 +11,25 @@ const verifyIfUserAlreadyExists = async (req: Request, res: Response, next: Next
     if ( user ){
       throw new ResponseError(StatusCodes.CONFLICT, `Já existe um usuário com o email '${email}'.`)
     }
+    next();
   } catch (error) {
     if (error instanceof ResponseError) {
-      const responseError = {
+        console.error(error)
+        const response: iMainResponse = {
           status: error.status,
           error: true,
           message: error.message,
-        } as iMainResponse
+        }
 
-        return res.status(error.status).json(responseError);
+        return res.status(error.status).json(response);
       } else {
-        const responseError = {
-          status: StatusCodes.INTERNAL_SERVER_ERROR,
-          error: true,
-          message: "Internal Server Error.",
-        } as iMainResponse;
-
-         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(responseError);
+        console.error(error)
+        const response: iMainResponse = {
+          error: false,
+          message: "Erro interno no servidor.",
+          status: 500
+        } 
+        return res.status(500).send(response)
       }
   }
 }

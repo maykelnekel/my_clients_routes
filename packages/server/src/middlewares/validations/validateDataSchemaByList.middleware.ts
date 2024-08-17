@@ -4,14 +4,17 @@ import { z, ZodError } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 import { iMainResponse, iSchemaValidationError } from '../../../../Shared/types/responses.types';
 
-export const validateDataSchema = (schema: z.ZodObject<any, any>) => {
+export const validateDataSchemaByList = (schema: z.ZodObject<any, any>) => {
   return (req: Request, res: Response, next: NextFunction): void | Response<iSchemaValidationError> => {
     try {
-      schema.parse(req.body);
+      const list = req.body;
+      for (const user of list) {
+        schema.parse(user);        
+      }
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-      const responseError = error.errors.map((issue: any) => ({
+      const response = error.errors.map((issue: any) => ({
           status: StatusCodes.BAD_REQUEST,
           error: true,
           message: issue.message,
@@ -21,15 +24,15 @@ export const validateDataSchema = (schema: z.ZodObject<any, any>) => {
           }
         } as iSchemaValidationError))
 
-        return res.status(StatusCodes.BAD_REQUEST).json(responseError[0]);
+        return res.status(StatusCodes.BAD_REQUEST).json(response[0]);
       } else {
-        const responseError = {
+        const response: iMainResponse = {
           status: StatusCodes.INTERNAL_SERVER_ERROR,
           error: true,
           message: "Internal Server Error.",
-        } as iMainResponse;
+        };
 
-         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(responseError);
+         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response);
       }
     }
   };

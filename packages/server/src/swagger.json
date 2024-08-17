@@ -9,7 +9,11 @@
   "tags": [
     {
       "name": "Users",
-      "description": "Rotas para interação com os usuários da aplicação."
+      "description": "Endpoints para interação com os usuários da aplicação."
+    },
+    {
+      "name": "Routes",
+      "description": "Endpoints para controle e interação com as rota de visitas."
     }
   ],
   "paths": {
@@ -18,7 +22,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Através dessa rota é possível criar um usuário.",
+        "description": "Através desse endpoint é possível criar um usuário.",
         "responses": {
           "201": {
             "description": "Crição feita com sucesso.",
@@ -98,7 +102,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Através dessa rota é possível listar todos os usuários da aplicação.",
+        "description": "Através desse endpoint é possível listar todos os usuários da aplicação.",
         "responses": {
           "200": {
             "description": "Retorno feito com sucesso.",
@@ -127,6 +131,71 @@
                 "schema": {
                   "$ref": "#/components/schemas/InternalServerError"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/routes/calculate_route": {
+      "post": {
+        "tags": [
+          "Routes"
+        ],
+        "description": "Através desse endpoint e com base em uma lista de usuários, é possível criar a ordenação da melhor rota de visitação.",
+        "responses": {
+          "200": {
+            "description": "Ordenação feita com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemaValidationError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemaValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersListSchema"
               }
             }
           }

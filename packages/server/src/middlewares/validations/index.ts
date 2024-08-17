@@ -1,7 +1,9 @@
-import { validateDataSchema } from "./validateDataSchema.middleware";
+import { validateDataSchema } from "./validateDataSchema.middleware copy";
+import { validateDataSchemaByList } from "./validateDataSchemaByList.middleware";
 
 const validationsMiddlewares = {
-  validateDataSchema
+  validateDataSchema,
+  validateDataSchemaByList
 };
 
 export default validationsMiddlewares;

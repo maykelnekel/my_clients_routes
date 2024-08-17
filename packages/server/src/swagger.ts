@@ -86,7 +86,11 @@ const doc = {
   tags: [
     {
       name: 'Users',
-      description: 'Rotas para interação com os usuários da aplicação.'
+      description: 'Endpoints para interação com os usuários da aplicação.'
+    },
+    {
+      name: 'Routes',
+      description: 'Endpoints para controle e interação com as rota de visitas.'
     },
   ],
   components: {

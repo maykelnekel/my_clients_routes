@@ -9,7 +9,7 @@ const verifyIfUserAlreadyExists = async (req: Request, res: Response, next: Next
     const email = req.body.email
     const user = await verifyIfUserExistsByEmail(email)
     if ( user ){
-      throw new ResponseError(StatusCodes.CONFLICT, `O usuário com o email '${email}' já está cadastrado.`)
+      throw new ResponseError(StatusCodes.CONFLICT, `Já existe um usuário com o email '${email}'.`)
     }
   } catch (error) {
     if (error instanceof ResponseError) {

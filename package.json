@@ -1,0 +1,15 @@
+{
+  "name": "my_clients_routes",
+  "version": "1.0.0",
+  "description": "An simple app to create the best rote to visit my clients.",
+  "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

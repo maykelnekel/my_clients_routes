@@ -1,0 +1,154 @@
+{
+  "swagger": 3,
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Minha API Express",
+    "description": "API desenvolvida com Express e documentada com Swagger"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Rotas para interação com os usuários da aplicação."
+    }
+  ],
+  "paths": {
+    "/api/v1/users/list": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Através dessa rota é possível listar todos os usuários da aplicação.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/users/create": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Através dessa rota é possível criar um usuário.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreationSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "mail@mail.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+          },
+          "latitude": {
+            "type": "number",
+            "example": 0
+          },
+          "longitude": {
+            "type": "number",
+            "example": 0
+          },
+          "id": {
+            "type": "string",
+            "example": "UUID"
+          }
+        }
+      },
+      "UserCreationSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "mail@mail.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+          },
+          "latitude": {
+            "type": "number",
+            "example": 0
+          },
+          "longitude": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "UsersListSchema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "string"
+            },
+            "email": {
+              "type": "string",
+              "example": "mail@mail.com"
+            },
+            "phone_number": {
+              "type": "string",
+              "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+            },
+            "latitude": {
+              "type": "number",
+              "example": 0
+            },
+            "longitude": {
+              "type": "number",
+              "example": 0
+            },
+            "id": {
+              "type": "string",
+              "example": "UUID"
+            }
+          }
+        }
+      }
+    }
+  }
+}

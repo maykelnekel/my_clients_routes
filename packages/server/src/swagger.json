@@ -76,7 +76,7 @@
           },
           "phone_number": {
             "type": "string",
-            "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+            "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
           },
           "latitude": {
             "type": "number",
@@ -105,7 +105,7 @@
           },
           "phone_number": {
             "type": "string",
-            "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+            "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
           },
           "latitude": {
             "type": "number",
@@ -132,7 +132,7 @@
             },
             "phone_number": {
               "type": "string",
-              "example": "(xx) xxxxx-xxxx | (xx) xxxx-xxxx"
+              "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
             },
             "latitude": {
               "type": "number",

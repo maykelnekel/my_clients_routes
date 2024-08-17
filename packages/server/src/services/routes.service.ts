@@ -22,7 +22,6 @@ export const calculateRoute = (users: tUser[]): tUserList => {
       let nearestUser = unvisitedUsers.reduce((prev, curr) => {
           let prevDistance = utils.calculateEuclideanDistance(currentLocation.latitude, currentLocation.longitude, prev.latitude, prev.longitude);
           let currDistance = utils.calculateEuclideanDistance(currentLocation.latitude, currentLocation.longitude, curr.latitude, curr.longitude);
-          console.log(prevDistance, currDistance)
           return prevDistance < currDistance ? prev : curr;
       });
 

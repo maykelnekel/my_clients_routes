@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
+import { userCreationSchema } from '../../../Shared/schemas/users.schemas';
 import {  usersControllers } from '../controllers'
+import { usersMiddlewares, validationsMiddlewares } from '../middlewares/index';
 
 const router = express.Router()
 
@@ -31,6 +33,10 @@ router.post('/create',  (_: Request, __: Response, next: NextFunction) =>{
         }
   */ 
   next()
-}, usersControllers.createUser);
+}, 
+  validationsMiddlewares.validateDataSchema(userCreationSchema),
+  usersMiddlewares.verifyIfUserAlreadyExists,
+  usersControllers.createUser
+);
 
 export default router;

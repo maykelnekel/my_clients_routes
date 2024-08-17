@@ -9,10 +9,10 @@ export const calculateRoute = async (req: Request, res: Response): Promise<Respo
     const list = req.body
     const data: tUserList = routesServices.calculateRoute(list)
     const response: iUserListResponse = {
-      data,
       error: false,
       message: "Ordenação feita com sucesso.",
-      status: 200
+      status: 200,
+      data,
     } 
     return res.status(200).send(response)
   } catch (error) {

@@ -4,28 +4,30 @@ import { z, ZodError } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 import { iMainResponse, iSchemaValidationError } from '../../../../Shared/types/responses.types';
 
-export const validateDataSchemaByList = (schema: z.ZodObject<any, any>) => {
+export const validateDataSchemaByList = (schema: z.ZodArray<z.ZodObject<any, any>>) => {
   return (req: Request, res: Response, next: NextFunction): void | Response<iSchemaValidationError> => {
     try {
       const list = req.body;
-      for (const user of list) {
-        schema.parse(user);        
-      }
+      schema.parse(list);      
+      // for (const user of list) {
+      // }
       next();
     } catch (error) {
       if (error instanceof ZodError) {
+      console.error(error);
       const response = error.errors.map((issue: any) => ({
           status: StatusCodes.BAD_REQUEST,
           error: true,
           message: issue.message,
           details: {
-            type: "Invalid data",
+            type: "Tipo de dado inválido.",
             field: issue.path.join('.'),
           }
         } as iSchemaValidationError))
 
         return res.status(StatusCodes.BAD_REQUEST).json(response[0]);
       } else {
+        console.error(error);
         const response: iMainResponse = {
           status: StatusCodes.INTERNAL_SERVER_ERROR,
           error: true,

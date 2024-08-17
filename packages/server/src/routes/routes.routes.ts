@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
-import { userCreationSchema } from '../../../Shared/schemas/users.schemas';
+import { userListSchema } from '../../../Shared/schemas/users.schemas';
 import {  routesControllers } from '../controllers'
 import { validationsMiddlewares } from '../middlewares/index';
 
@@ -37,7 +37,7 @@ router.post('/calculate_route',  (_: Request, __: Response, next: NextFunction) 
   */ 
   next()
 }, 
-  validationsMiddlewares.validateDataSchemaByList(userCreationSchema),
+  validationsMiddlewares.validateDataSchemaByList(userListSchema),
   routesControllers.calculateRoute
 );
 

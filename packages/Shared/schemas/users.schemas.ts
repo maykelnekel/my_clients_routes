@@ -49,4 +49,8 @@ export const userCreationSchema = userSchema.omit({
   id: true,
 });
 
-export const userUpdateSchema = userCreationSchema.partial({});
+export const userListSchema = 
+  z.array(userSchema, {
+    invalid_type_error: "Formato inválido. Precisa ser uma lista de usuários.",
+    message: "Formato inválido. Precisa ser uma lista de usuários."
+  });

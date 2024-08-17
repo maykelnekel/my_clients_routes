@@ -1,12 +1,16 @@
 import client from '../database/client'
 import app from './app'
-const port = 4000
-app.listen(port, async () => {
+import "dotenv/config"
+
+const PORT = Number(process.env.SERVER_PORT);
+const HOST = process.env.SERVER_HOST;
+
+app.listen(PORT, async () => {
   try {
     await client.connect();
     console.info("DatabaseConnected")
-    console.info(`App listening at http://localhost:${port}`)
-    console.info(`You can access the doc in http://localhost:${port}/docs`)
+    console.info(`App listening at ${HOST}:${PORT}`)
+    console.info(`You can access the doc in ${HOST}:${PORT}/docs`)
   } catch (error) {
     console.error(error)
   }

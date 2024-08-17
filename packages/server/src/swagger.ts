@@ -1,5 +1,10 @@
+import "dotenv/config"
 import swaggerAutogen from 'swagger-autogen';
+import { iMainResponse, iSchemaValidationError, iUserListResponse, iUserResponse } from '../../Shared/types/responses.types';
 import { tUser, tUserCreation } from '../../Shared/types/user.types';
+
+const PORT = Number(process.env.SERVER_PORT);
+const HOST = process.env.SERVER_HOST;
 
 const outputFile = './swagger.json';
 const endpointsFiles = ['./app.ts'];
@@ -21,14 +26,59 @@ const UserSchema: tUser = {
   id: "UUID"
 }
 
+const InternalServerError: iMainResponse = {
+  error: true || false,
+  message: "string",
+  status: 500,
+}
+
+const ConflictError: iMainResponse = {
+  error: true || false,
+  message: "string",
+  status: 409,
+} 
+
+const SchemaValidationError: iSchemaValidationError = {
+  error: true,
+  message: "string",
+  status: 400,
+  details: {
+    field: "string",
+    type: "string"
+  }
+}
+
+const UserListResponse: iUserListResponse = {
+  error: false,
+  message: "string",
+  status: 200,
+  data: [
+    UserSchema
+  ]
+} 
+
+const UserResponse: iUserResponse = {
+  error: false,
+  message: "string",
+  status: 0,
+  data: UserSchema
+} 
+
+const UserCreationResponse: iUserResponse = {
+  error: false,
+  message: "string",
+  status: 201,
+  data: UserSchema
+} 
+
 const doc = {
   swagger: 3.0,
   info: {
     version: '1.0.0',
-    title: 'Minha API Express',
-    description: 'API desenvolvida com Express e documentada com Swagger',
+    title: 'Minha rota de usuários',
+    description: 'API desenvolvida com Express, Typescript e Postgres. E documentada com Swagger',
   },
-  host: 'localhost:4000',
+  host: `${HOST}:${PORT}`,
   basePath: '/',
   schemes: ['http'],
   consumes: ['application/json'],
@@ -44,6 +94,12 @@ const doc = {
       UserSchema,
       UserCreationSchema,
       UsersListSchema: [UserSchema],
+      InternalServerError,
+      ConflictError,
+      UserCreationResponse,
+      SchemaValidationError,
+      UserListResponse,
+      UserResponse
     }
   },
 };

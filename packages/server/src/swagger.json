@@ -3,14 +3,9 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Minha API Express",
-    "description": "API desenvolvida com Express e documentada com Swagger"
+    "title": "Minha rota de usuários",
+    "description": "API desenvolvida com Express, Typescript e Postgres. E documentada com Swagger"
   },
-  "servers": [
-    {
-      "url": "http://localhost:4000/"
-    }
-  ],
   "tags": [
     {
       "name": "Users",
@@ -18,22 +13,6 @@
     }
   ],
   "paths": {
-    "/api/v1/users/list": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "description": "Através dessa rota é possível listar todos os usuários da aplicação.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/v1/users/create": {
       "post": {
         "tags": [
@@ -42,10 +21,64 @@
         "description": "Através dessa rota é possível criar um usuário.",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Crição feita com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreationResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemaValidationError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemaValidationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Erro por conflitos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -54,6 +87,46 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserCreationSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/list": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Através dessa rota é possível listar todos os usuários da aplicação.",
+        "responses": {
+          "200": {
+            "description": "Retorno feito com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
               }
             }
           }
@@ -90,6 +163,9 @@
             "type": "string",
             "example": "UUID"
           }
+        },
+        "xml": {
+          "name": "UserSchema"
         }
       },
       "UserCreationSchema": {
@@ -115,6 +191,9 @@
             "type": "number",
             "example": 0
           }
+        },
+        "xml": {
+          "name": "UserCreationSchema"
         }
       },
       "UsersListSchema": {
@@ -147,6 +226,232 @@
               "example": "UUID"
             }
           }
+        },
+        "xml": {
+          "name": "UsersListSchema"
+        }
+      },
+      "InternalServerError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 500
+          }
+        },
+        "xml": {
+          "name": "InternalServerError"
+        }
+      },
+      "ConflictError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 409
+          }
+        },
+        "xml": {
+          "name": "ConflictError"
+        }
+      },
+      "UserCreationResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 201
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "string"
+              },
+              "email": {
+                "type": "string",
+                "example": "mail@mail.com"
+              },
+              "phone_number": {
+                "type": "string",
+                "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
+              },
+              "latitude": {
+                "type": "number",
+                "example": 0
+              },
+              "longitude": {
+                "type": "number",
+                "example": 0
+              },
+              "id": {
+                "type": "string",
+                "example": "UUID"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "UserCreationResponse"
+        }
+      },
+      "SchemaValidationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 400
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "example": "string"
+              },
+              "type": {
+                "type": "string",
+                "example": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "SchemaValidationError"
+        }
+      },
+      "UserListResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 200
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "mail@mail.com"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
+                },
+                "latitude": {
+                  "type": "number",
+                  "example": 0
+                },
+                "longitude": {
+                  "type": "number",
+                  "example": 0
+                },
+                "id": {
+                  "type": "string",
+                  "example": "UUID"
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "UserListResponse"
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 0
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "string"
+              },
+              "email": {
+                "type": "string",
+                "example": "mail@mail.com"
+              },
+              "phone_number": {
+                "type": "string",
+                "example": "(xx) xxxxx-xxxx || (xx) xxxx-xxxx"
+              },
+              "latitude": {
+                "type": "number",
+                "example": 0
+              },
+              "longitude": {
+                "type": "number",
+                "example": 0
+              },
+              "id": {
+                "type": "string",
+                "example": "UUID"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "UserResponse"
         }
       }
     }

@@ -27,9 +27,9 @@ const verifyIfUserAlreadyExists = async (req: Request, res: Response, next: Next
         const response: iMainResponse = {
           error: false,
           message: "Erro interno no servidor.",
-          status: 500
+          status: StatusCodes.INTERNAL_SERVER_ERROR
         } 
-        return res.status(500).send(response)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(response)
       }
   }
 }

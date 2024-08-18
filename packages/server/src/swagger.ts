@@ -1,4 +1,6 @@
 import "dotenv/config"
+import { stat } from "fs";
+import { StatusCodes } from "http-status-codes";
 import swaggerAutogen from 'swagger-autogen';
 import { iMainResponse, iSchemaValidationError, iUserListResponse, iUserResponse } from '../../Shared/types/responses.types';
 import { tUser, tUserCreation } from '../../Shared/types/user.types';
@@ -26,22 +28,22 @@ const UserSchema: tUser = {
   id: "UUID"
 }
 
-const InternalServerError: iMainResponse = {
+const InternalServerErrorResponse: iMainResponse = {
   error: true || false,
   message: "string",
-  status: 500,
+  status: StatusCodes.INTERNAL_SERVER_ERROR,
 }
 
-const ConflictError: iMainResponse = {
+const ConflictErrorResponse: iMainResponse = {
   error: true || false,
   message: "string",
-  status: 409,
+  status: StatusCodes.CONFLICT,
 } 
 
-const SchemaValidationError: iSchemaValidationError = {
+const SchemaValidationErrorResponse: iSchemaValidationError = {
   error: true,
   message: "string",
-  status: 400,
+  status: StatusCodes.BAD_REQUEST,
   details: {
     field: "string",
     type: "string"
@@ -51,7 +53,7 @@ const SchemaValidationError: iSchemaValidationError = {
 const UserListResponse: iUserListResponse = {
   error: false,
   message: "string",
-  status: 200,
+  status: StatusCodes.OK,
   data: [
     UserSchema
   ]
@@ -60,14 +62,14 @@ const UserListResponse: iUserListResponse = {
 const UserResponse: iUserResponse = {
   error: false,
   message: "string",
-  status: 0,
+  status: StatusCodes.OK,
   data: UserSchema
 } 
 
 const UserCreationResponse: iUserResponse = {
   error: false,
   message: "string",
-  status: 201,
+  status: StatusCodes.CREATED,
   data: UserSchema
 } 
 
@@ -98,12 +100,12 @@ const doc = {
       UserSchema,
       UserCreationSchema,
       UsersListSchema: [UserSchema],
-      InternalServerError,
-      ConflictError,
       UserCreationResponse,
-      SchemaValidationError,
       UserListResponse,
-      UserResponse
+      UserResponse,
+      SchemaValidationErrorResponse,
+      InternalServerErrorResponse,
+      ConflictErrorResponse
     }
   },
 };

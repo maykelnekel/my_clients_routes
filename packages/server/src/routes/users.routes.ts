@@ -28,15 +28,15 @@ router.post('/create',  (_: Request, __: Response, next: NextFunction) =>{
     }
     #swagger.responses[400] = {
         description: 'Erro de validação.',
-        schema: { $ref: '#/components/schemas/SchemaValidationError' }
+        schema: { $ref: '#/components/schemas/SchemaValidationErrorResponse' }
     }
     #swagger.responses[409] = {
         description: 'Erro por conflitos.',
-        schema: { $ref: '#/components/schemas/ConflictError' }
+        schema: { $ref: '#/components/schemas/ConflictErrorResponse' }
     }
     #swagger.responses[500] = {
         description: 'Erro interno.',
-        schema: { $ref: '#/components/schemas/InternalServerError' }
+        schema: { $ref: '#/components/schemas/InternalServerErrorResponse' }
     }
   */ 
   next()
@@ -59,7 +59,7 @@ router.get('/list', (_: Request, __: Response, next: NextFunction) =>{
     }
     #swagger.responses[500] = {
         description: 'Erro interno.',
-        schema: { $ref: '#/components/schemas/InternalServerError' }
+        schema: { $ref: '#/components/schemas/InternalServerErrorResponse' }
     }
   */ 
   next()

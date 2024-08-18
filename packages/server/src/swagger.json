@@ -44,12 +44,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SchemaValidationError"
+                  "$ref": "#/components/schemas/SchemaValidationErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/SchemaValidationError"
+                  "$ref": "#/components/schemas/SchemaValidationErrorResponse"
                 }
               }
             }
@@ -59,12 +59,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConflictError"
+                  "$ref": "#/components/schemas/ConflictErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConflictError"
+                  "$ref": "#/components/schemas/ConflictErrorResponse"
                 }
               }
             }
@@ -74,12 +74,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               }
             }
@@ -124,12 +124,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               }
             }
@@ -164,12 +164,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SchemaValidationError"
+                  "$ref": "#/components/schemas/SchemaValidationErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/SchemaValidationError"
+                  "$ref": "#/components/schemas/SchemaValidationErrorResponse"
                 }
               }
             }
@@ -179,12 +179,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
                 }
               }
             }
@@ -300,46 +300,6 @@
           "name": "UsersListSchema"
         }
       },
-      "InternalServerError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "boolean",
-            "example": true
-          },
-          "message": {
-            "type": "string",
-            "example": "string"
-          },
-          "status": {
-            "type": "number",
-            "example": 500
-          }
-        },
-        "xml": {
-          "name": "InternalServerError"
-        }
-      },
-      "ConflictError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "boolean",
-            "example": true
-          },
-          "message": {
-            "type": "string",
-            "example": "string"
-          },
-          "status": {
-            "type": "number",
-            "example": 409
-          }
-        },
-        "xml": {
-          "name": "ConflictError"
-        }
-      },
       "UserCreationResponse": {
         "type": "object",
         "properties": {
@@ -387,39 +347,6 @@
         },
         "xml": {
           "name": "UserCreationResponse"
-        }
-      },
-      "SchemaValidationError": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "boolean",
-            "example": true
-          },
-          "message": {
-            "type": "string",
-            "example": "string"
-          },
-          "status": {
-            "type": "number",
-            "example": 400
-          },
-          "details": {
-            "type": "object",
-            "properties": {
-              "field": {
-                "type": "string",
-                "example": "string"
-              },
-              "type": {
-                "type": "string",
-                "example": "string"
-              }
-            }
-          }
-        },
-        "xml": {
-          "name": "SchemaValidationError"
         }
       },
       "UserListResponse": {
@@ -487,7 +414,7 @@
           },
           "status": {
             "type": "number",
-            "example": 0
+            "example": 200
           },
           "data": {
             "type": "object",
@@ -521,6 +448,79 @@
         },
         "xml": {
           "name": "UserResponse"
+        }
+      },
+      "SchemaValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 400
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "example": "string"
+              },
+              "type": {
+                "type": "string",
+                "example": "string"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "SchemaValidationErrorResponse"
+        }
+      },
+      "InternalServerErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 500
+          }
+        },
+        "xml": {
+          "name": "InternalServerErrorResponse"
+        }
+      },
+      "ConflictErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 409
+          }
+        },
+        "xml": {
+          "name": "ConflictErrorResponse"
         }
       }
     }

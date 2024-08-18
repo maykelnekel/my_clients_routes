@@ -9,8 +9,6 @@ export const validateDataSchemaByList = (schema: z.ZodArray<z.ZodObject<any, any
     try {
       const list = req.body;
       schema.parse(list);      
-      // for (const user of list) {
-      // }
       next();
     } catch (error) {
       if (error instanceof ZodError) {

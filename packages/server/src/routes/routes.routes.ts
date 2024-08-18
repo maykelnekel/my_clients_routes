@@ -28,11 +28,11 @@ router.post('/calculate_route',  (_: Request, __: Response, next: NextFunction) 
     }
     #swagger.responses[400] = {
         description: 'Erro de validação.',
-        schema: { $ref: '#/components/schemas/SchemaValidationError' }
+        schema: { $ref: '#/components/schemas/SchemaValidationErrorResponse' }
     }
     #swagger.responses[500] = {
         description: 'Erro interno.',
-        schema: { $ref: '#/components/schemas/InternalServerError' }
+        schema: { $ref: '#/components/schemas/InternalServerErrorResponse' }
     }
   */ 
   next()

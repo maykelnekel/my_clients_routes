@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { usersServices } from '../services'
 import { tUser, tUserList } from '../../../Shared/types/user.types'
 import { iMainResponse, iUserListResponse, iUserResponse } from '../../../Shared/types/responses.types';
+import { StatusCodes } from 'http-status-codes';
 
 
 export const getAllUsers = async (__: Request, res: Response): Promise<Response<iUserListResponse>> => {
@@ -10,10 +11,10 @@ export const getAllUsers = async (__: Request, res: Response): Promise<Response<
     const response: iUserListResponse = {
       error: false,
       message: "Usuários listados com sucesso.",
-      status: 200,
+      status: StatusCodes.OK,
       data,
     } 
-    return res.status(200).send(response)
+    return res.status(StatusCodes.OK).send(response)
   } catch (error) {
     console.error(error);
     const response: iMainResponse = {
@@ -21,7 +22,7 @@ export const getAllUsers = async (__: Request, res: Response): Promise<Response<
       message: "Erro interno no servidor.",
       status: 500
     } 
-    return res.status(500).send(response)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(response)
   }
 };
 
@@ -32,18 +33,18 @@ export const createUser = async (req: Request, res: Response): Promise<Response<
     const response: iUserResponse = {
       error: false,
       message: "Usuários criado com sucesso.",
-      status: 200,
+      status: StatusCodes.CREATED,
       data,
     } 
-    return res.status(200).send(response)
+    return res.status(StatusCodes.CREATED).send(response)
   } catch (error) {
     console.error(error);
     const response: iMainResponse = {
       error: false,
       message: "Erro interno no servidor.",
-      status: 500
+      status: StatusCodes.INTERNAL_SERVER_ERROR
     } 
-    return res.status(500).send(response)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(response)
   }
 };
 

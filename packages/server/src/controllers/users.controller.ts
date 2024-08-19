@@ -32,7 +32,7 @@ export const createUser = async (req: Request, res: Response): Promise<Response<
     const data: tUser = await usersServices.createUser(userData)
     const response: iUserResponse = {
       error: false,
-      message: "Usuários criado com sucesso.",
+      message: "Usuário criado com sucesso.",
       status: StatusCodes.CREATED,
       data,
     } 

@@ -1,14 +1,27 @@
 "use client";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tUserCreation } from "../../../../../Shared/types/user.types";
 import { userCreationSchema } from "../../../../../Shared/schemas/users.schemas";
-import { Box, TextField } from "@mui/material";
+import {
+  Alert,
+  Box,
+  CircularProgress,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import { createUser } from "@/api/myRoutesApi/users/createUser";
+import {
+  iMainResponse,
+  iUserResponse,
+} from "../../../../../Shared/types/responses.types";
+import { useRouter } from "next/navigation";
 
 export function FormUserCreation(): JSX.Element {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -16,13 +29,42 @@ export function FormUserCreation(): JSX.Element {
     control,
     setValue,
   } = useForm<tUserCreation>({ resolver: zodResolver(userCreationSchema) });
+  const [error, setError] = useState(false);
+  const [send, setSend] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+  const [sendMessage, setSendMessage] = useState("");
+
   const onSubmit = async (data: tUserCreation) => {
-    try {
-      const res = await createUser(data);
-      console.log("res", res);
-    } catch (error) {
-      console.error(error);
-    }
+    setRedirecting(false);
+    setSending(true);
+    setTimeout(async () => {
+      try {
+        setSend(true);
+        const res = await createUser(data);
+        console.log("res", res);
+        if (res.status === 201 && "data" in res) {
+          setError(false);
+          setSendMessage(res.message);
+          setSending(false);
+          setRedirecting(true);
+          return setTimeout(() => router.push("/"), 1000);
+        } else {
+          setError(true);
+          setSendMessage(res.message);
+          setSending(false);
+          return;
+        }
+      } catch (error) {
+        console.error(error);
+        setError(true);
+        setSendMessage(
+          "Um erro inesperado aconteceu, por favor tente novamente mais tarde."
+        );
+        setSending(false);
+        return;
+      }
+    }, 1000);
   };
 
   function formatPhoneNumber(value: string) {
@@ -53,6 +95,9 @@ export function FormUserCreation(): JSX.Element {
     return cleaned;
   }
 
+  useEffect(() => {}, [send]);
+  if (redirecting) {
+  }
   return (
     <Box
       component="form"
@@ -66,128 +111,157 @@ export function FormUserCreation(): JSX.Element {
       flexDirection="column"
       alignItems="center"
     >
-      <Controller
-        name="name"
-        control={control}
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            id="outlined-error-helper-text"
-            label="Nome*"
-            variant="outlined"
-            size="medium"
-            error={Boolean(errors.name)}
-            helperText={errors.name?.message}
-            inputRef={ref}
-            onChange={(value) => {
-              setValue("name", value.target.value, { shouldValidate: true });
-            }}
+      {redirecting ? (
+        <CircularProgress color="inherit" />
+      ) : (
+        <>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                id="outlined-error-helper-text"
+                label="Nome*"
+                variant="outlined"
+                size="medium"
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+                inputRef={ref}
+                onChange={(value) => {
+                  setValue("name", value.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="email"
-        control={control}
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            id="outlined-error-helper-text"
-            label="Email*"
-            type="email"
-            variant="outlined"
-            size="medium"
-            error={Boolean(errors.email)}
-            helperText={errors.email?.message}
-            inputRef={ref}
-            onChange={(value) => {
-              setValue("email", value.target.value, { shouldValidate: true });
-            }}
+          <Controller
+            name="email"
+            control={control}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                id="outlined-error-helper-text"
+                label="Email*"
+                type="email"
+                variant="outlined"
+                size="medium"
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                inputRef={ref}
+                onChange={(value) => {
+                  setValue("email", value.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="phone_number"
-        control={control}
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            id="outlined-error-helper-text"
-            label="Telefone*"
-            type="tel"
-            variant="outlined"
-            size="medium"
-            error={Boolean(errors.phone_number)}
-            helperText={errors.phone_number?.message}
-            inputRef={ref}
-            onChange={(e) => {
-              // Aplica a formatação conforme o usuário digita
-              const formattedValue = formatPhoneNumber(e.target.value);
-              field.onChange(formattedValue);
-            }}
+          <Controller
+            name="phone_number"
+            control={control}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                id="outlined-error-helper-text"
+                label="Telefone*"
+                type="tel"
+                variant="outlined"
+                size="medium"
+                error={Boolean(errors.phone_number)}
+                helperText={errors.phone_number?.message}
+                inputRef={ref}
+                onChange={(e) => {
+                  const formattedValue = formatPhoneNumber(e.target.value);
+                  field.onChange(formattedValue);
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="latitude"
-        control={control}
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            id="outlined-error-helper-text"
-            label="Latitude*"
-            variant="outlined"
-            size="medium"
-            error={Boolean(errors.latitude)}
-            helperText={errors.latitude?.message}
-            inputRef={ref}
-            type="number"
-            inputProps={{
-              maxLength: 13,
-              step: "1",
-            }}
-            onChange={(value) => {
-              const cleanValue = value.target.value
-                .replace(/[^-\d.]*/g, "")
-                .trim();
-              setValue("latitude", Number(cleanValue), {
-                shouldValidate: true,
-              });
-            }}
+          <Controller
+            name="latitude"
+            control={control}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                id="outlined-error-helper-text"
+                label="Latitude*"
+                variant="outlined"
+                size="medium"
+                error={Boolean(errors.latitude)}
+                helperText={errors.latitude?.message}
+                inputRef={ref}
+                type="number"
+                inputProps={{
+                  maxLength: 13,
+                  step: "1",
+                }}
+                onChange={(value) => {
+                  const cleanValue = value.target.value
+                    .replace(/[^-\d.]*/g, "")
+                    .trim();
+                  setValue("latitude", Number(cleanValue), {
+                    shouldValidate: true,
+                  });
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="longitude"
-        control={control}
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            id="outlined-error-helper-text"
-            label="Longitude*"
-            variant="outlined"
-            size="medium"
-            error={Boolean(errors.longitude)}
-            helperText={errors.longitude?.message}
-            inputRef={ref}
-            type="number"
-            inputProps={{
-              maxLength: 13,
-              step: "1",
-            }}
-            onChange={(value) => {
-              const cleanValue = value.target.value
-                .replace(/[^-\d.]*/g, "")
-                .trim();
-              setValue("longitude", Number(cleanValue), {
-                shouldValidate: true,
-              });
-            }}
+          <Controller
+            name="longitude"
+            control={control}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                id="outlined-error-helper-text"
+                label="Longitude*"
+                variant="outlined"
+                size="medium"
+                error={Boolean(errors.longitude)}
+                helperText={errors.longitude?.message}
+                inputRef={ref}
+                type="number"
+                inputProps={{
+                  maxLength: 13,
+                  step: "1",
+                }}
+                onChange={(value) => {
+                  const cleanValue = value.target.value
+                    .replace(/[^-\d.]*/g, "")
+                    .trim();
+                  setValue("longitude", Number(cleanValue), {
+                    shouldValidate: true,
+                  });
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <Button variant="contained" size="medium" type="submit">
-        Criar Usuário
-      </Button>
+          {send && (
+            <Snackbar open={send} autoHideDuration={6000} message={sendMessage}>
+              <Alert
+                onClose={() => {
+                  setSend(false);
+                  setError(false);
+                }}
+                severity={error ? "error" : "success"}
+                variant="filled"
+                sx={{ width: "100%", top: 0 }}
+              >
+                {sendMessage}
+              </Alert>
+            </Snackbar>
+          )}
+          <Button
+            variant="contained"
+            size="medium"
+            type="submit"
+            color={error ? "error" : "primary"}
+          >
+            {sending ? <CircularProgress color="inherit" /> : "Criar Usuário"}
+          </Button>
+        </>
+      )}
     </Box>
   );
 }

@@ -32,14 +32,14 @@ export const userSchema = z.object({
   latitude: 
     z.number({
       required_error: "Você precisa informar o campo 'latitude'.",
-      invalid_type_error: "Tipo inválido. Esperado 'String'."
+      invalid_type_error: "Tipo inválido. Esperado 'Number'."
     })
     .min(-90, {message: "Formato inválido para 'latitude'."})
     .max(90, {message: "Formato inválido para 'latitude'."}),
   longitude: 
     z.number({
       required_error: "Você precisa informar o campo 'longitude'.",
-      invalid_type_error: "Tipo inválido. Esperado 'String'."
+      invalid_type_error: "Tipo inválido. Esperado 'Number'."
     })
     .min(-180, {message: "Formato inválido para 'longitude'."})
     .max(180, {message: "Formato inválido para 'longitude'."}),

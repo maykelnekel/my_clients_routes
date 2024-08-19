@@ -9,5 +9,4 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
   },
-  "include": ["packages/**/*"]
 }

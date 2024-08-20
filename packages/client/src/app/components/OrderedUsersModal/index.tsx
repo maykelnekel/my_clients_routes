@@ -4,23 +4,17 @@ import { cleanOrderedUsers } from "@/libs/redux/slices/users/usersLists.slice";
 import {
   Box,
   Divider,
-  Grid,
   List,
   ListItem,
   ListItemText,
   Modal,
 } from "@mui/material";
-import { relative } from "path";
 
 export function OrderedUsersModal() {
-  const style = {};
-
   const dispatch = useAppDispatch();
   const { orderedUsers } = useAppSelector((state) => state.usersListsReducer);
 
-  React.useEffect(() => {
-    console.log(orderedUsers);
-  }, [orderedUsers]);
+  React.useEffect(() => {}, [orderedUsers]);
   return (
     <Modal
       open={orderedUsers.length > 0}

@@ -19,10 +19,7 @@ export default function Home(): JSX.Element {
         sx={{
           display: "flex",
           flexDirection: "column",
-          // alignItems: "center",
           width: "100%",
-          // gap: 2,
-          // padding: 2,
         }}
       >
         <CustomAppBar />

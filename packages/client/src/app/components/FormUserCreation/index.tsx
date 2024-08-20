@@ -102,10 +102,10 @@ export function FormUserCreation(): JSX.Element {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        border: 1,
-        padding: 2,
-        borderRadius: 2,
-        color: "gray",
+        // border: 1,
+        // padding: 2,
+        // borderRadius: 2,
+        // color: "gray",
       }}
       noValidate
       autoComplete="off"

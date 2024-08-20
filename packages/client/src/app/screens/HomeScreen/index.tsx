@@ -24,6 +24,7 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
+  Grid,
 } from "@mui/material";
 import React from "react";
 import { tUserList } from "../../../../../Shared/types/user.types";
@@ -80,9 +81,9 @@ export function HomeScreen() {
         setSendMessage(orderedUsers.message);
         setSending(false);
         dispatch(setOrderedUsers(orderedUsers.data));
-      } else {
+      } else if (orderedUsers.status === 400 && "data" in orderedUsers) {
         setError(true);
-        setSendMessage(orderedUsers.message);
+        setSendMessage("Há um problema com o envio dos dados.");
         setSending(false);
         return;
       }
@@ -112,11 +113,7 @@ export function HomeScreen() {
 
   React.useEffect(() => {}, [allUsers, baseFilter, filteredList]);
 
-  React.useEffect(() => {
-    const orderedList = allUsers.filter((user) =>
-      usersToOrder.includes(user.id)
-    );
-  }, [dispatch, usersToOrder, allUsers]);
+  React.useEffect(() => {}, [dispatch, usersToOrder, allUsers]);
 
   return (
     <Box

@@ -13,7 +13,7 @@ const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 export const getOrderedUsersRoute = async (
   data: tUserList
 ): Promise<iUserListResponse | iMainResponse | iSchemaValidationError> => {
-  const uri = `${BASE_URL}/${API_VERSION}/users/create`;
+  const uri = `${BASE_URL}/${API_VERSION}/routes/calculate_route`;
   return axios
     .post<iUserListResponse>(uri, data)
     .then(function (response) {

@@ -1,19 +1,17 @@
 import axios, { AxiosError } from "axios";
-import "dotenv/config";
 
 import {
   iMainResponse,
   iUserListResponse,
 } from "../../../../../Shared/types/responses.types";
 
-const BASE_URL = process.env.NEXT_APP_BASE_URL;
-const API_VERSION = process.env.NEXT_APP_API_VERSION;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 
 export const getAllUsers = async (): Promise<iUserListResponse | iMainResponse> => {
-  // TODO: capturar uri do .env
-  const uri = `${BASE_URL}/${API_VERSION}/users/create`;
+  const uri = `${BASE_URL}/${API_VERSION}/users/list`;
   return axios
-    .get<iUserListResponse>("http://localhost:4000/api/v1/users/list")
+    .get<iUserListResponse>(uri)
     .then(function (response) {
       return response.data;
     })

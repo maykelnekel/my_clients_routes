@@ -70,21 +70,34 @@ export function HomeScreen() {
   const handleOrderList = async () => {
     try {
       setSending(true);
+      
       const userList = allUsers.filter((user) =>
         usersToOrder.includes(user.id)
       );
+      console.log(userList)
+      if (userList.length === 0){
+        setError(true);
+        setSendMessage(
+          "Nenhum usuário selecionado.",
+        );
+        setSending(false);
+        return;
+      }
       const orderedUsers = await getOrderedUsersRoute(userList);
-      console.log(orderedUsers);
       if (orderedUsers.status === 200 && "data" in orderedUsers) {
         setError(false);
         setSendMessage(orderedUsers.message);
         setSending(false);
         dispatch(setOrderedUsers(orderedUsers.data));
-      } else if (orderedUsers.status === 400 && "data" in orderedUsers) {
+      } else if (orderedUsers.status === 400) {
         setError(true);
         setSendMessage("Há um problema com o envio dos dados.");
         setSending(false);
         return;
+      } else {
+        setError(true);
+        setSendMessage("Houve um erro inesperado ao tentar listar os usuários, tente novamente mais tarde.");
+        setSending(false);
       }
     } catch (error) {
       console.error(error);
@@ -102,11 +115,35 @@ export function HomeScreen() {
       try {
         const users = await getAllUsers();
         if (users.status === 200 && "data" in users) {
+          setError(false);
           dispatch(setAllUsers(users.data));
+          setSendMessage(users.message);
+          setSending(false);
+        } else if (users.status === 400 && "data" in users) {
+          setError(true);
+          setSendMessage("Há um problema com o envio dos dados.");
+          setSending(false);
+          return;
+        } else if (users.status === 404 && "data" in users) {
+          setError(true);
+          setSendMessage("Nenhum cadastrado.");
+          setSending(false);
+          return;
+        } else {
+          setError(true);
+          setSendMessage("Houve um erro inesperado ao tentar listar os usuários, tente novamente mais tarde.");
+          setSending(false);
         }
       } catch (error) {
         console.error(error);
+        setError(true);
+        setSendMessage(
+          "Um erro inesperado aconteceu, por favor tente novamente mais tarde.",
+        );
+        setSending(false);
+        return;
       }
+
     })();
   }, [dispatch]);
 
@@ -120,7 +157,7 @@ export function HomeScreen() {
     allUsers,
   ]);
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {}, [error, sending, send]);
 
   return (
     <Box
@@ -131,8 +168,8 @@ export function HomeScreen() {
       }}
     >
       <OrderedUsersModal />
-      {send && (
-        <Snackbar open={send} autoHideDuration={6000} message={sendMessage}>
+      {error && (
+        <Snackbar open={error} autoHideDuration={6000} message={sendMessage}>
           <Alert
             onClose={() => {
               setSend(false);
@@ -176,11 +213,12 @@ export function HomeScreen() {
             size="large"
             color="info"
             onClick={handleOrderList}
+            disabled={usersToOrder.length === 0}
           >
             {sending ? (
               <CircularProgress color="inherit" />
             ) : (
-              "Criar melhor rota"
+              usersToOrder.length > 0 ? "Criar melhor rota" : "Selecione usuários na lista"
             )}
           </Button>
           <Button

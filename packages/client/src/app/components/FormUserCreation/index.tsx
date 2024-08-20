@@ -1,5 +1,4 @@
 "use client";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,26 +13,22 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { createUser } from "@/api/myRoutesApi/users/createUser";
-import {
-  iMainResponse,
-  iUserResponse,
-} from "../../../../../Shared/types/responses.types";
+
 import { useRouter } from "next/navigation";
 
 export function FormUserCreation(): JSX.Element {
   const router = useRouter();
   const {
-    register,
     handleSubmit,
     formState: { errors },
     control,
     setValue,
   } = useForm<tUserCreation>({ resolver: zodResolver(userCreationSchema) });
-  const [error, setError] = useState(false);
   const [send, setSend] = useState(false);
+  const [error, setError] = useState(false);
   const [sending, setSending] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
+  const [redirecting, setRedirecting] = useState(false);
 
   const onSubmit = async (data: tUserCreation) => {
     setRedirecting(false);
@@ -42,7 +37,6 @@ export function FormUserCreation(): JSX.Element {
       try {
         setSend(true);
         const res = await createUser(data);
-        console.log("res", res);
         if (res.status === 201 && "data" in res) {
           setError(false);
           setSendMessage(res.message);
@@ -102,14 +96,19 @@ export function FormUserCreation(): JSX.Element {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: "100%", maxWidth: "300px" },
+        gap: 1,
+        maxWidth: 330,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        border: 1,
+        padding: 2,
+        borderRadius: 2,
+        color: "gray",
       }}
       noValidate
       autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
     >
       {redirecting ? (
         <CircularProgress color="inherit" />
@@ -121,6 +120,9 @@ export function FormUserCreation(): JSX.Element {
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
+                sx={{
+                  width: "100%",
+                }}
                 id="outlined-error-helper-text"
                 label="Nome*"
                 variant="outlined"
@@ -142,6 +144,9 @@ export function FormUserCreation(): JSX.Element {
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
+                sx={{
+                  width: "100%",
+                }}
                 id="outlined-error-helper-text"
                 label="Email*"
                 type="email"
@@ -164,6 +169,9 @@ export function FormUserCreation(): JSX.Element {
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
+                sx={{
+                  width: "100%",
+                }}
                 id="outlined-error-helper-text"
                 label="Telefone*"
                 type="tel"
@@ -185,6 +193,9 @@ export function FormUserCreation(): JSX.Element {
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
+                sx={{
+                  width: "100%",
+                }}
                 id="outlined-error-helper-text"
                 label="Latitude*"
                 variant="outlined"
@@ -214,6 +225,9 @@ export function FormUserCreation(): JSX.Element {
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
+                sx={{
+                  width: "100%",
+                }}
                 id="outlined-error-helper-text"
                 label="Longitude*"
                 variant="outlined"
@@ -254,9 +268,12 @@ export function FormUserCreation(): JSX.Element {
           )}
           <Button
             variant="contained"
-            size="medium"
+            size="large"
             type="submit"
             color={error ? "error" : "primary"}
+            sx={{
+              width: "100%",
+            }}
           >
             {sending ? <CircularProgress color="inherit" /> : "Criar Usuário"}
           </Button>

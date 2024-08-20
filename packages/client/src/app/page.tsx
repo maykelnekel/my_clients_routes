@@ -1,7 +1,10 @@
+import { HomeScreen } from "./screens/HomeScreen/index";
+import StoreProvider from "./StoreProvider";
+
 export default function Home() {
   return (
-    <main>
-      <text>Teste</text>
-    </main>
+    <StoreProvider>
+      <HomeScreen />;
+    </StoreProvider>
   );
 }

@@ -74,7 +74,6 @@ export function HomeScreen() {
       const userList = allUsers.filter((user) =>
         usersToOrder.includes(user.id)
       );
-      console.log(userList)
       if (userList.length === 0){
         setError(true);
         setSendMessage(
@@ -232,7 +231,6 @@ export function HomeScreen() {
         <DataGrid
           autoHeight
           onRowClick={(data) => {
-            console.log(data.id);
             if (usersToOrder.includes(data.id as string)) {
               dispatch(removeUserToOrder(data.id as string));
             } else {

@@ -10,12 +10,6 @@ import {
 } from "@/libs/redux/slices/users/usersLists.slice";
 import {
   Box,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Divider,
   TextField,
   Select,
   MenuItem,
@@ -24,7 +18,6 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
-  Grid,
 } from "@mui/material";
 import React from "react";
 import { tUserList } from "../../../../../Shared/types/user.types";
@@ -32,6 +25,7 @@ import { getOrderedUsersRoute } from "@/api/myRoutesApi/routes/getOrderedUsersRo
 import { OrderedUsersModal } from "@/app/components/OrderedUsersModal/index";
 import CustomDrawer from "@/app/components/CustomDrawer/index";
 import CustomAppBar from "@/app/components/CustomAppBar/index";
+import { DataGrid } from "@mui/x-data-grid";
 
 export type tBaseFilterOptions = "name" | "phone_number" | "email";
 export function HomeScreen() {
@@ -40,6 +34,7 @@ export function HomeScreen() {
   const { allUsers, usersToOrder } = useAppSelector(
     (state) => state.usersListsReducer
   );
+  const [lineColor, setLineColor] = React.useState("black");
   const [sendMessage, setSendMessage] = React.useState("");
   const [send, setSend] = React.useState(false);
   const [sending, setSending] = React.useState(false);
@@ -54,18 +49,22 @@ export function HomeScreen() {
 
   const handleFilter = (event: { target: { value: string } }) => {
     const value = event.target.value;
-    const list = allUsers.filter((user) =>
-      user[baseFilter].toLocaleLowerCase().includes(value.toLocaleLowerCase())
-    );
+    const list = allUsers.filter((user) => {
+      const base = user[baseFilter];
+      if (value.length === 0) {
+        return;
+      }
+      if (typeof base === "string") {
+        if (baseFilter === "phone_number") {
+          return base.includes(value);
+        } else {
+          return base.includes(value.toLocaleLowerCase());
+        }
+      } else if (typeof base === "number") {
+        return base == Number(value);
+      }
+    });
     setFilteredList(list);
-  };
-
-  const handleToggle = (id: string) => () => {
-    if (usersToOrder.includes(id)) {
-      dispatch(removeUserToOrder(id));
-    } else {
-      dispatch(setUserToOrder(id));
-    }
   };
 
   const handleOrderList = async () => {
@@ -111,9 +110,17 @@ export function HomeScreen() {
     })();
   }, [dispatch]);
 
-  React.useEffect(() => {}, [allUsers, baseFilter, filteredList]);
+  React.useEffect(() => {}, [
+    allUsers,
+    baseFilter,
+    filteredList,
+    lineColor,
+    dispatch,
+    usersToOrder,
+    allUsers,
+  ]);
 
-  React.useEffect(() => {}, [dispatch, usersToOrder, allUsers]);
+  React.useEffect(() => {}, []);
 
   return (
     <Box
@@ -160,7 +167,9 @@ export function HomeScreen() {
           >
             <MenuItem value="name">Nome</MenuItem>
             <MenuItem value="email">Email</MenuItem>
-            <MenuItem value="phone_number">Telephone</MenuItem>
+            <MenuItem value="phone_number">Telefone</MenuItem>
+            <MenuItem value="latitude">Latitude</MenuItem>
+            <MenuItem value="longitude">Longitude</MenuItem>
           </Select>
           <Button
             variant="contained"
@@ -182,53 +191,43 @@ export function HomeScreen() {
             Limpar seleções
           </Button>
         </Box>
-        <List sx={{ overflow: "auto", maxHeight: "75vh" }}>
-          {(filteredList.length > 0 ? filteredList : allUsers).map((user) => {
-            const userId = user.id;
-            return (
-              <ListItem key={userId} disablePadding>
-                <ListItemButton
-                  onClick={handleToggle(userId)}
-                  dense
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignContent: "center",
-                    gap: 2,
-                    flexWrap: "nowrap",
-                  }}
-                >
-                  <Checkbox
-                    edge="start"
-                    checked={usersToOrder.includes(userId)}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ "aria-labelledby": userId }}
-                  />
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: 2,
-                      flexWrap: "wrap",
-                      width: "100%",
-                    }}
-                  >
-                    <ListItemText id={userId} primary={user.name} />
-                    <ListItemText id={userId} primary={user.email} />
-                    <ListItemText id={userId} primary={user.phone_number} />
-                    <Divider
-                      orientation="horizontal"
-                      flexItem
-                      sx={{ width: "100%" }}
-                    />
-                  </Box>
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
+        <DataGrid
+          autoHeight
+          onRowClick={(data) => {
+            console.log(data.id);
+            if (usersToOrder.includes(data.id as string)) {
+              dispatch(removeUserToOrder(data.id as string));
+            } else {
+              dispatch(setUserToOrder(data.id as string));
+            }
+          }}
+          columns={[
+            {
+              field: "id",
+              headerName: "Checked",
+              valueGetter: (id) => {
+                const value = usersToOrder.includes(id) ? "✅" : "";
+                return value;
+              },
+            },
+            { field: "name", headerName: "Nome", minWidth: 200 },
+            { field: "email", headerName: "Email", minWidth: 200 },
+            { field: "phone_number", headerName: "Telefone", minWidth: 200 },
+            { field: "latitude", headerName: "Latitude", minWidth: 200 },
+            { field: "longitude", headerName: "longitude", minWidth: 200 },
+          ]}
+          rows={filteredList.length > 0 ? filteredList : allUsers}
+          sx={{
+            height: "300px",
+            ".MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-row:hover": {
+              cursor: "pointer",
+            },
+          }}
+          rowSelection
+        />
       </Box>
     </Box>
   );

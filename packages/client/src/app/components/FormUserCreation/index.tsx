@@ -96,8 +96,9 @@ export function FormUserCreation(): JSX.Element {
     <Box
       component="form"
       sx={{
-        gap: 1,
-        maxWidth: 330,
+        gap: 2,
+        maxWidth: 600,
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

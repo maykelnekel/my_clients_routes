@@ -1,6 +1,5 @@
 "use client";
 import { getAllUsers } from "@/api/myRoutesApi/users/getAllUsers";
-import DrawerAppBar from "@/app/components/DrawerAppBar/index";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
 import {
   cleanUsersToOrder,
@@ -30,6 +29,8 @@ import React from "react";
 import { tUserList } from "../../../../../Shared/types/user.types";
 import { getOrderedUsersRoute } from "@/api/myRoutesApi/routes/getOrderedUsersRoute";
 import { OrderedUsersModal } from "@/app/components/OrderedUsersModal/index";
+import CustomDrawer from "@/app/components/CustomDrawer/index";
+import CustomAppBar from "@/app/components/CustomAppBar/index";
 
 export type tBaseFilterOptions = "name" | "phone_number" | "email";
 export function HomeScreen() {
@@ -122,8 +123,7 @@ export function HomeScreen() {
       component="main"
       sx={{
         display: "flex",
-        flexDirection: "column",
-        gap: 2,
+        flexDirection: "row",
       }}
     >
       <OrderedUsersModal />
@@ -142,83 +142,97 @@ export function HomeScreen() {
           </Alert>
         </Snackbar>
       )}
-      <DrawerAppBar screen="Home" />
-      <Box component="div" sx={{ display: "flex", paddingLeft: 2, gap: 1 }}>
-        <TextField placeholder="Filtrar Usuários" onChange={handleFilter} />
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={baseFilter}
-          onChange={handleChange}
-          displayEmpty
-        >
-          <MenuItem value="name">Nome</MenuItem>
-          <MenuItem value="email">Email</MenuItem>
-          <MenuItem value="phone_number">Telephone</MenuItem>
-        </Select>
-        <Button
-          variant="contained"
-          size="large"
-          color="info"
-          onClick={handleOrderList}
-        >
-          {sending ? <CircularProgress color="inherit" /> : "Criar melhor rota"}
-        </Button>
-        <Button
-          size="large"
-          color="info"
-          onClick={() => dispatch(cleanUsersToOrder())}
-        >
-          Limpar seleções
-        </Button>
-      </Box>
-      <List sx={{ overflow: "auto", maxHeight: "75vh" }}>
-        {(filteredList.length > 0 ? filteredList : allUsers).map((user) => {
-          const userId = user.id;
-          return (
-            <ListItem key={userId} disablePadding>
-              <ListItemButton
-                onClick={handleToggle(userId)}
-                dense
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignContent: "center",
-                  gap: 2,
-                  flexWrap: "nowrap",
-                }}
-              >
-                <Checkbox
-                  edge="start"
-                  checked={usersToOrder.includes(userId)}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ "aria-labelledby": userId }}
-                />
-                <Box
+      <CustomDrawer screen="Home" />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          width: "100%",
+        }}
+      >
+        <CustomAppBar />
+        <Box component="div" sx={{ display: "flex", paddingLeft: 2, gap: 1 }}>
+          <TextField placeholder="Filtrar Usuários" onChange={handleFilter} />
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={baseFilter}
+            onChange={handleChange}
+            displayEmpty
+          >
+            <MenuItem value="name">Nome</MenuItem>
+            <MenuItem value="email">Email</MenuItem>
+            <MenuItem value="phone_number">Telephone</MenuItem>
+          </Select>
+          <Button
+            variant="contained"
+            size="large"
+            color="info"
+            onClick={handleOrderList}
+          >
+            {sending ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              "Criar melhor rota"
+            )}
+          </Button>
+          <Button
+            size="large"
+            color="info"
+            onClick={() => dispatch(cleanUsersToOrder())}
+          >
+            Limpar seleções
+          </Button>
+        </Box>
+        <List sx={{ overflow: "auto", maxHeight: "75vh" }}>
+          {(filteredList.length > 0 ? filteredList : allUsers).map((user) => {
+            const userId = user.id;
+            return (
+              <ListItem key={userId} disablePadding>
+                <ListItemButton
+                  onClick={handleToggle(userId)}
+                  dense
                   sx={{
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignContent: "center",
                     gap: 2,
-                    flexWrap: "wrap",
-                    width: "100%",
+                    flexWrap: "nowrap",
                   }}
                 >
-                  <ListItemText id={userId} primary={user.name} />
-                  <ListItemText id={userId} primary={user.email} />
-                  <ListItemText id={userId} primary={user.phone_number} />
-                  <Divider
-                    orientation="horizontal"
-                    flexItem
-                    sx={{ width: "100%" }}
+                  <Checkbox
+                    edge="start"
+                    checked={usersToOrder.includes(userId)}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ "aria-labelledby": userId }}
                   />
-                </Box>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 2,
+                      flexWrap: "wrap",
+                      width: "100%",
+                    }}
+                  >
+                    <ListItemText id={userId} primary={user.name} />
+                    <ListItemText id={userId} primary={user.email} />
+                    <ListItemText id={userId} primary={user.phone_number} />
+                    <Divider
+                      orientation="horizontal"
+                      flexItem
+                      sx={{ width: "100%" }}
+                    />
+                  </Box>
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Box>
     </Box>
   );
 }

@@ -13,8 +13,8 @@ const verifyIfUserAlreadyExists = async (req: Request, res: Response, next: Next
     }
     next();
   } catch (error) {
+    console.error(error);
     if (error instanceof ResponseError) {
-        console.error(error)
         const response: iMainResponse = {
           status: error.status,
           error: true,
@@ -23,7 +23,6 @@ const verifyIfUserAlreadyExists = async (req: Request, res: Response, next: Next
 
         return res.status(error.status).json(response);
       } else {
-        console.error(error)
         const response: iMainResponse = {
           error: false,
           message: "Erro interno no servidor.",

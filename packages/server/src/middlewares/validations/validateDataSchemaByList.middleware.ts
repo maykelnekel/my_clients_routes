@@ -11,9 +11,9 @@ export const validateDataSchemaByList = (schema: z.ZodArray<z.ZodObject<any, any
       schema.parse(list);      
       next();
     } catch (error) {
+      console.error(error)
       if (error instanceof ZodError) {
-      console.error(error);
-      const response = error.errors.map((issue: any) => ({
+        const response = error.errors.map((issue: any) => ({
           status: StatusCodes.BAD_REQUEST,
           error: true,
           message: issue.message,
@@ -25,7 +25,6 @@ export const validateDataSchemaByList = (schema: z.ZodArray<z.ZodObject<any, any
 
         return res.status(StatusCodes.BAD_REQUEST).json(response[0]);
       } else {
-        console.error(error);
         const response: iMainResponse = {
           status: StatusCodes.INTERNAL_SERVER_ERROR,
           error: true,

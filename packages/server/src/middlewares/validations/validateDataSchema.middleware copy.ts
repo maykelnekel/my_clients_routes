@@ -10,8 +10,9 @@ export const validateDataSchema = (schema: z.ZodObject<any, any>) => {
       schema.parse(req.body);
       next();
     } catch (error) {
+      console.error(error)
       if (error instanceof ZodError) {
-      const response = error.errors.map((issue: any) => ({
+        const response = error.errors.map((issue: any) => ({
           status: StatusCodes.BAD_REQUEST,
           error: true,
           message: issue.message,

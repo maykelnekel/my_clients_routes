@@ -204,7 +204,7 @@ export function HomeScreen() {
           columns={[
             {
               field: "id",
-              headerName: "Checked",
+              headerName: "Selecionado",
               valueGetter: (id) => {
                 const value = usersToOrder.includes(id) ? "✅" : "";
                 return value;

@@ -55,11 +55,7 @@ export function HomeScreen() {
         return;
       }
       if (typeof base === "string") {
-        if (baseFilter === "phone_number") {
-          return base.includes(value);
-        } else {
-          return base.includes(value.toLocaleLowerCase());
-        }
+          return base.toLowerCase().includes(value.toLocaleLowerCase());
       } else if (typeof base === "number") {
         return base == Number(value);
       }

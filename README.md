@@ -1,7 +1,7 @@
 # Atac - My Client Routes
 Uma aplicação simples, para gestão de clientes e rotas de visitação.
 
-Essa aplicação está escrita em **TypeScript**, utilizando **Node** + **Express** + **PostgreSQL** + **Swagger** no back end e **React** + **Next** + **MaterialUi** no front end.
+Essa aplicação está escrita em **TypeScript**, utilizando **Node** + **Express** + **PostgreSQL** + **Swagger** e no back end e **React** + **Next** + **MaterialUi** no front end. Além disso, utilizamos **zod** para realizar validações de schema.
 
 ## Configurando o projeto
 **⚠️ ATENÇÃO ⚠️** Estamos utilizando a estrutura de **monorepo**, Uilizando a funcionalidade de workspaces, para dividir Backend, Frontend e documentos compartilhados. Por isso é importante, que **ao rodar um script**, não esqueça de **defirnir** qual é o **workspace** de destino. Você pode fazer isso utilizando a tag `-w` por exemplo `npm i -w 'workspace'`.
